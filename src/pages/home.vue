@@ -1,3 +1,3 @@
 <template>
-    <div>Home Page</div>
+    <div>Ini Home Page</div>
 </template>
