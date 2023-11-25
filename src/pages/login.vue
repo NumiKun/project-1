@@ -1,6 +1,7 @@
 <script setup lang="ts">
     import { useAuthStore } from '@/stores/auth';
     import { ref } from 'vue';
+    import axios from "axios";
     import { useRouter } from 'vue-router';
 
     const auth = useAuthStore()
@@ -8,17 +9,24 @@
     const password = ref('')
     const router = useRouter()
 
-    const onLogin = () => {
-        const validUsername = 'admin'
-        const validPassword = '12345'
+    const onLogin = async () => {
+    try {
+      const response = await axios.post('http://localhost:3000/login', {
+        username: username.value,
+        password: password.value,
+      });
 
-        if (username.value === validUsername && password.value === validPassword) {
-            auth.login(username.value)
-            router.push('/')
-        } else {
-            window.alert('Username atau password salah')
-        }
+      if (response.data.status === 'success') {
+        auth.login(username.value);
+        router.push('/');
+      } else {
+        window.alert('Username atau password salah');
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      window.alert('Terjadi kesalahan saat melakukan login');
     }
+  };
 </script>
 
 <template>
